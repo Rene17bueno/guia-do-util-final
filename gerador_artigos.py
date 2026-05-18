@@ -2,7 +2,7 @@ import os
 from google import genai
 from google.genai import types
 
-# 1. Configuração da API (Chave configurada corretamente como texto)
+# 1. Configuração da API (Chave configurada corretamente)
 API_KEY = "AIzaSyDBFLmPPAN8IWFsL8KiiQEbwNnObCgrw0w" 
 client = genai.Client(api_key=API_KEY)
 
@@ -11,7 +11,6 @@ def gerar_artigo_completo(tema, palavra_chave_imagem):
     Gera um artigo HTML completo, estruturado com Bootstrap, pronto para o Guia do Útil.
     """
     
-    # Prompt focado em gerar muito conteúdo escrito, aprofundado e profissional
     prompt = f"""
     Atue como um redator profissional de SEO e Copywriting para o portal 'Guia do Útil'.
     Gere um artigo extremamente completo, detalhado, com muito conteúdo escrito e bem aprofundado sobre o tema: "{tema}".
@@ -27,8 +26,9 @@ def gerar_artigo_completo(tema, palavra_chave_imagem):
 
     print(f"🤖 Gerando artigo aprofundado sobre: {tema}...")
     
+    # Ajustado para usar o identificador aceito pela API do Google
     response = client.models.generate_content(
-        model='gemini-3-flash',
+        model='gemini-2.5-flash',
         contents=prompt,
     )
     
@@ -79,16 +79,13 @@ def gerar_artigo_completo(tema, palavra_chave_imagem):
 
 # --- CONFIGURAÇÃO DO TEMA ---
 if __name__ == "__main__":
-    # Altere o tema aqui sempre que quiser criar um artigo novo
     tema_artigo = "O Impacto da Inteligência Artificial na Automação de Processos em 2026"
     termo_imagem = "technology" 
     
     artigo_pronto = gerar_artigo_completo(tema_artigo, termo_imagem)
     
-    # Garante que a pasta 'artigo' exista
     os.makedirs("artigo", exist_ok=True)
     
-    # Salva o arquivo final estruturado
     nome_arquivo = "artigo/artigo-automacao-ia.html"
     with open(nome_arquivo, "w", encoding="utf-8") as f:
         f.write(artigo_pronto)
